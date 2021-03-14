@@ -7,7 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,7 +24,7 @@ public class UserData extends AppCompatActivity {
 
     TextView mNameTextView, mPhoneNoTextView, mEmailIdTextView, mAccountNoTextView, mIfscCodeTextView, mCurrentBalanceTextView;
     Button mTransferButton;
-    String phone_no;
+    String mPhoneNo;
     double mCurrentBalance;
 
     @Override
@@ -33,17 +33,16 @@ public class UserData extends AppCompatActivity {
         setContentView(R.layout.activity_user_data);
 
         mNameTextView = findViewById(R.id.username);
-        mPhoneNoTextView = findViewById(R.id.user_phonenumber);
+        mPhoneNoTextView = findViewById(R.id.user_phone_no);
         mEmailIdTextView = findViewById(R.id.email);
         mAccountNoTextView = findViewById(R.id.account_no);
         mIfscCodeTextView = findViewById(R.id.ifsc_code);
         mCurrentBalanceTextView = findViewById(R.id.balance);
-        mTransferButton = findViewById(R.id.transfer_button);
+        mTransferButton = findViewById(R.id.button_transfer);
 
         Intent intent = getIntent();
-        phone_no = intent.getStringExtra("Phone_no");
-        Log.d("msgJaimin", "this is UserData" + phone_no);
-        showData(phone_no);
+        mPhoneNo = intent.getStringExtra("Phone_no");
+        showData(mPhoneNo);
 
         mTransferButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,12 +54,12 @@ public class UserData extends AppCompatActivity {
     }
 
     private void showData(String phoneNo) {
-        Cursor cursor = new MyDbHandler(this).readparticulardata(phoneNo);
+        Cursor cursor = new MyDbHandler(this).readParticularData(phoneNo);
 
         if (cursor.moveToFirst()) {
             do {
-                String balancefromdb = cursor.getString(2);
-                mCurrentBalance = Double.parseDouble(balancefromdb);
+                String balanceFromDb = cursor.getString(2);
+                mCurrentBalance = Double.parseDouble(balanceFromDb);
 
                 NumberFormat nf = NumberFormat.getNumberInstance();
                 nf.setGroupingUsed(true);
@@ -114,7 +113,6 @@ public class UserData extends AppCompatActivity {
                     mAmount.setError("Amount can't be empty");
                 } else if (Double.parseDouble(mAmount.getText().toString()) > mCurrentBalance) {
                     mAmount.setError("Your account don't have enough balance");
-                    Log.d("dbJaimin", "dont have enough bal");
                 } else {
                     Intent intent = new Intent(UserData.this, SendToUser.class);
                     intent.putExtra("phone_no", mPhoneNoTextView.getText().toString());
