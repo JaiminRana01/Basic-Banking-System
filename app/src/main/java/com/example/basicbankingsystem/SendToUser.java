@@ -29,8 +29,8 @@ public class SendToUser extends AppCompatActivity {
     private SendToUserAdapter adapter;
     private List<Contact> contactList = new ArrayList<>();
 
-    String phonenumber, name, currentamount, transferamount, remainingamount;
-    String mSelectuserPhonenumber, mSelectuserName, mSelectuserBalance, date;
+    String mPhoneNo, mName, mCurrentAmount, mTransferAmount, mRemainingAmount;
+    String mSelectuserPhoneNo, mSelectuserName, mSelectuserBalance, mDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,35 +45,35 @@ public class SendToUser extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            phonenumber = bundle.getString("phone_no");
-            name = bundle.getString("name");
-            currentamount = bundle.getString("current_amount");
-            transferamount = bundle.getString("transfer_amount");
+            mPhoneNo = bundle.getString("phone_no");
+            mName = bundle.getString("name");
+            mCurrentAmount = bundle.getString("current_amount");
+            mTransferAmount = bundle.getString("transfer_amount");
         }
 
-        contactList = db.getSendToUserData(phonenumber);
+        contactList = db.getSendToUserData(mPhoneNo);
 
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM-yyyy, hh:mm a");
-        date = simpleDateFormat.format(calendar.getTime());
+        mDate = simpleDateFormat.format(calendar.getTime());
 
 
         adapter = new SendToUserAdapter(SendToUser.this, contactList);
         recyclerView.setAdapter(adapter);
     }
 
-    public void selectuser(int position) {
-        mSelectuserPhonenumber = contactList.get(position).getPhone_no();
-        Cursor cursor = new MyDbHandler(this).readparticulardata(mSelectuserPhonenumber);
+    public void selectUser(int position) {
+        mSelectuserPhoneNo = contactList.get(position).getPhone_no();
+        Cursor cursor = new MyDbHandler(this).readParticularData(mSelectuserPhoneNo);
         while (cursor.moveToNext()) {
             mSelectuserName = cursor.getString(1);
             mSelectuserBalance = cursor.getString(2);
-            Double Dselectuser_balance = Double.parseDouble(mSelectuserBalance);
-            Double Dselectuser_transferamount = Double.parseDouble(transferamount);
-            Double Dselectuser_remainingamount = Dselectuser_balance + Dselectuser_transferamount;
+            Double selecteduserBalance = Double.parseDouble(mSelectuserBalance);
+            Double selecteduserTransferAmount = Double.parseDouble(mTransferAmount);
+            Double selecteduserRemainingAmount = selecteduserBalance + selecteduserTransferAmount;
 
-            new MyDbHandler(this).addHistory(date, name, mSelectuserName, transferamount, "Success");
-            new MyDbHandler(this).updateAmount(mSelectuserPhonenumber, Dselectuser_remainingamount.toString());
+            new MyDbHandler(this).addHistory(mDate, mName, mSelectuserName, mTransferAmount, "Success");
+            new MyDbHandler(this).updateAmount(mSelectuserPhoneNo, selecteduserRemainingAmount.toString());
             calculateAmount();
             Toast.makeText(this, "Transaction Successful!", Toast.LENGTH_LONG).show();
             startActivity(new Intent(SendToUser.this, UsersActivity.class));
@@ -82,11 +82,11 @@ public class SendToUser extends AppCompatActivity {
     }
 
     private void calculateAmount() {
-        Double Dcurrentamount = Double.parseDouble(currentamount);
-        Double Dtransferamount = Double.parseDouble(transferamount);
-        Double Dremainingamount = Dcurrentamount - Dtransferamount;
-        remainingamount = Dremainingamount.toString();
-        new MyDbHandler(this).updateAmount(phonenumber, remainingamount);
+        Double currentAmount = Double.parseDouble(mCurrentAmount);
+        Double transferAmount = Double.parseDouble(mTransferAmount);
+        Double remainingAmount = currentAmount - transferAmount;
+        mRemainingAmount = remainingAmount.toString();
+        new MyDbHandler(this).updateAmount(mPhoneNo, mRemainingAmount);
     }
 
     @Override
@@ -96,7 +96,7 @@ public class SendToUser extends AppCompatActivity {
                 .setPositiveButton("yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        new MyDbHandler(SendToUser.this).addHistory(date, name, "Not selected", transferamount, "Failed");
+                        new MyDbHandler(SendToUser.this).addHistory(mDate, mName, "Not selected", mTransferAmount, "Failed");
                         Toast.makeText(SendToUser.this, "Transaction Cancelled!", Toast.LENGTH_LONG).show();
                         startActivity(new Intent(SendToUser.this, UsersActivity.class));
                         finish();

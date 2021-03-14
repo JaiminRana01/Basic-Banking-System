@@ -53,7 +53,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/user_phonenumber"
+                android:id="@+id/user_phone_no"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:textColor="#000"
@@ -62,7 +62,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/emailid_container"
+            android:id="@+id/email_id_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
@@ -177,7 +177,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/rupeeslash"
+                    android:id="@+id/rupee_slash"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=" /-"
@@ -188,7 +188,7 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/transfer_button"
+            android:id="@+id/button_transfer"
             android:layout_width="147dp"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"

@@ -10,6 +10,7 @@ import android.util.Log;
 import com.example.basicbankingsystem.model.Contact;
 import com.example.basicbankingsystem.params.Params;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class MyDbHandler extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String create_table1 = "create table " + Params.TABLE_NAME1 + " ( " + Params.KEY_PHONE + " INTEGER PRIMARY KEY ," + Params.KEY_NAME + " TEXT," + Params.KEY_BALANCE + " DECIMAL," + Params.KEY_EMAIL + " VARCHAR," + Params.KEY_ACCOUNT_N0 + " VARCHAR," + Params.KEY_IFSC_CODE + " VARCHAR)";
+        String create_table1 = "CREATE TABLE " + Params.TABLE_NAME1 + " ( " + Params.KEY_PHONE + " INTEGER PRIMARY KEY ," + Params.KEY_NAME + " TEXT," + Params.KEY_BALANCE + " DECIMAL," + Params.KEY_EMAIL + " VARCHAR," + Params.KEY_ACCOUNT_N0 + " VARCHAR," + Params.KEY_IFSC_CODE + " VARCHAR)";
 
         String create_table2 = "CREATE TABLE " + Params.TABLE_NAME2 + " ( " + Params.KEY_TRANSACTION_ID +
                 " INTEGER PRIMARY KEY," + Params.KEY_DATE + " TEXT," + Params.KEY_FROM_NAME + " TEXT," +
@@ -31,22 +32,17 @@ public class MyDbHandler extends SQLiteOpenHelper {
 
         db.execSQL(create_table1);
         db.execSQL(create_table2);
-    }
-
-    public void addContact(Contact contact) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(Params.KEY_NAME, contact.getName());
-        values.put(Params.KEY_PHONE, Long.parseLong(contact.getPhone_no()));
-        values.put(Params.KEY_BALANCE, contact.getBalance());
-        values.put(Params.KEY_EMAIL, contact.getEmail());
-        values.put(Params.KEY_ACCOUNT_N0, contact.getAccount_no());
-        values.put(Params.KEY_IFSC_CODE, contact.getIfsc_code());
-
-        db.insert(Params.TABLE_NAME1, null, values);
-        Log.d("dbJaimin", "Successfully inserted");
-        db.close();
+        db.execSQL("INSERT INTO " + Params.TABLE_NAME1 + " values(9000000001, 'Bhavik', 9472.00, 'harshit@gmail.com', 'XXXXXXXXXXXX1234', 'ABC09876543')");
+        db.execSQL("INSERT INTO " + Params.TABLE_NAME1 + " values(9000000002,'Aaryan',9472.00,'harshit@gmail.com','XXXXXXXXXXXX1234','ABC09876543')");
+        db.execSQL("INSERT INTO " + Params.TABLE_NAME1 + " values(9000000003,'Rutvik',9472.00,'harshit@gmail.com','XXXXXXXXXXXX1234','ABC09876543')");
+        db.execSQL("INSERT INTO " + Params.TABLE_NAME1 + " values(9000000004,'Pranjal',9472.00,'harshit@gmail.com','XXXXXXXXXXXX1234','ABC09876543')");
+        db.execSQL("INSERT INTO " + Params.TABLE_NAME1 + " values(9000000005,'Rushabh',9472.00,'harshit@gmail.com','XXXXXXXXXXXX1234','ABC09876543')");
+        db.execSQL("INSERT INTO " + Params.TABLE_NAME1 + " values(9000000006,'JK',9472.00,'harshit@gmail.com','XXXXXXXXXXXX1234','ABC09876543')");
+        db.execSQL("INSERT INTO " + Params.TABLE_NAME1 + " values(9000000007,'Deep',9472.00,'harshit@gmail.com','XXXXXXXXXXXX1234','ABC09876543')");
+        db.execSQL("INSERT INTO " + Params.TABLE_NAME1 + " values(9000000008,'Rounak',9472.00,'harshit@gmail.com','XXXXXXXXXXXX1234','ABC09876543')");
+        db.execSQL("INSERT INTO " + Params.TABLE_NAME1 + " values(9000000009,'Aman',9472.00,'harshit@gmail.com','XXXXXXXXXXXX1234','ABC09876543')");
+        db.execSQL("INSERT INTO " + Params.TABLE_NAME1 + " values(9000000020,'Naman',9472.00,'harshit@gmail.com','XXXXXXXXXXXX1234','ABC09876543')");
+        db.execSQL("INSERT INTO " + Params.TABLE_NAME1 + " values(9000000030,'Shubham',9472.00,'harshit@gmail.com','XXXXXXXXXXXX1234','ABC09876543')");
     }
 
     @Override
@@ -66,9 +62,19 @@ public class MyDbHandler extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 Contact contact = new Contact();
+
+                String balanceFromDb = cursor.getString(2);
+                Double balance = Double.parseDouble(balanceFromDb);
+
+                NumberFormat nf = NumberFormat.getNumberInstance();
+                nf.setGroupingUsed(true);
+                nf.setMaximumFractionDigits(2);
+                nf.setMinimumFractionDigits(2);
+                String price = nf.format(balance);
+
                 contact.setPhone_no(cursor.getString(0));
                 contact.setName(cursor.getString(1));
-                contact.setBalance(cursor.getString(2));
+                contact.setBalance(price);
                 contact.setEmail(cursor.getString(3));
                 contact.setAccount_no(cursor.getString(4));
                 contact.setIfsc_code(cursor.getString(5));
@@ -84,15 +90,24 @@ public class MyDbHandler extends SQLiteOpenHelper {
         List<Contact> contactList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String select = "select * from " + Params.TABLE_NAME1 + " except select * from " + Params.TABLE_NAME1 + " where " + Params.KEY_PHONE + " = " + phonenumber;
+        String select = "SELECT * FROM " + Params.TABLE_NAME1 + " EXCEPT SELECT * FROM " + Params.TABLE_NAME1 + " WHERE " + Params.KEY_PHONE + " = " + phonenumber;
         Cursor cursor = db.rawQuery(select, null);
 
         if (cursor.moveToFirst()) {
             do {
                 Contact contact = new Contact();
+                String balanceFromDb = cursor.getString(2);
+                Double balance = Double.parseDouble(balanceFromDb);
+
+                NumberFormat nf = NumberFormat.getNumberInstance();
+                nf.setGroupingUsed(true);
+                nf.setMaximumFractionDigits(2);
+                nf.setMinimumFractionDigits(2);
+                String price = nf.format(balance);
+
                 contact.setPhone_no(cursor.getString(0));
                 contact.setName(cursor.getString(1));
-                contact.setBalance(cursor.getString(2));
+                contact.setBalance(price);
 
                 contactList.add(contact);
             } while (cursor.moveToNext());
@@ -131,17 +146,10 @@ public class MyDbHandler extends SQLiteOpenHelper {
         return contactList;
     }
 
-    public Cursor readparticulardata(String phonenumber) {
+    public Cursor readParticularData(String phone_no) {
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + Params.TABLE_NAME1 + " WHERE phone_no = " + phonenumber, null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + Params.TABLE_NAME1 + " WHERE " + Params.KEY_PHONE + " = " + phone_no, null);
         return cursor;
-    }
-
-    public void deleteContact(String phone_no) {
-        SQLiteDatabase db = this.getWritableDatabase();
-//        db.delete(Params.TABLE_NAME, Params.KEY_PHONE + "=?", new String[]{phone_no});
-        Log.d("dbJaimin", "delete contact successfully invoked");
-        db.close();
     }
 
     public boolean addHistory(String date, String from_name, String to_name, String amount, String status) {
@@ -162,15 +170,15 @@ public class MyDbHandler extends SQLiteOpenHelper {
         }
     }
 
-    public Cursor readtransferdata() {
+    public Cursor readTransferData() {
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery("select * from " + Params.TABLE_NAME2, null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + Params.TABLE_NAME2, null);
         return cursor;
     }
 
-    public void updateAmount(String phonenumber, String amount) {
+    public void updateAmount(String phone_no, String amount) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("update " + Params.TABLE_NAME1 + " set balance = " + amount + " where " + Params.KEY_PHONE + " = " + phonenumber);
+        db.execSQL("UPDATE " + Params.TABLE_NAME1 + " SET balance = " + amount + " WHERE " + Params.KEY_PHONE + " = " + phone_no);
     }
 
 }

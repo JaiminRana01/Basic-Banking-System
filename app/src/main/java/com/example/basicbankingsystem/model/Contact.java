@@ -1,33 +1,7 @@
 package com.example.basicbankingsystem.model;
 
-import java.text.NumberFormat;
-
 public class Contact {
     String phone_no, name, date, email, account_no, ifsc_code, from_name, to_name, balance, transaction_status;
-
-
-    public Contact(String phone_no, String name, String balance) {
-        this.phone_no = phone_no;
-        this.name = name;
-        this.balance = balance;
-    }
-
-    public Contact(String phone_no, String name, String balance, String email, String account_no, String ifsc_code) {
-        this.phone_no = phone_no;
-        this.name = name;
-        this.balance = balance;
-        this.email = email;
-        this.account_no = account_no;
-        this.ifsc_code = ifsc_code;
-    }
-
-    public Contact(String balance, String date, String transaction_status, String from_name, String to_name) {
-        this.balance = balance;
-        this.date = date;
-        this.transaction_status = transaction_status;
-        this.from_name = from_name;
-        this.to_name = to_name;
-    }
 
     public Contact() {
     }
