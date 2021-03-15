@@ -11,9 +11,14 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.basicbankingsystem.adapter.SendToUserAdapter;
@@ -36,6 +41,10 @@ public class SendToUser extends AppCompatActivity {
     String mPhoneNo, mName, mCurrentAmount, mTransferAmount, mRemainingAmount;
     String mSelectuserPhoneNo, mSelectuserName, mSelectuserBalance, mDate;
 
+    View layout;
+    TextView toastTextView;
+    ImageView toastImageView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +54,13 @@ public class SendToUser extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        // Retrieve the Layout Inflater and inflate the layout from xml
+        LayoutInflater inflater = getLayoutInflater();
+        layout = inflater.inflate(R.layout.custom_toast,
+                (ViewGroup) findViewById(R.id.toast_layout_root));
+        // get the reference of TextView and ImageVIew from inflated layout
+        toastTextView = (TextView) layout.findViewById(R.id.toastTextView);
+        toastImageView = (ImageView) layout.findViewById(R.id.toastImageView);
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -69,26 +85,20 @@ public class SendToUser extends AppCompatActivity {
         while (cursor.moveToNext()) {
             mSelectuserName = cursor.getString(1);
             mSelectuserBalance = cursor.getString(2);
-            Double selecteduserBalance = Double.parseDouble(mSelectuserBalance);
-            Double selecteduserTransferAmount = Double.parseDouble(mTransferAmount);
-            Double selecteduserRemainingAmount = selecteduserBalance + selecteduserTransferAmount;
 
-            new MyDbHandler(this).addHistory(mDate, mName, mSelectuserName, mTransferAmount, "Success");
-            new MyDbHandler(this).updateAmount(mSelectuserPhoneNo, selecteduserRemainingAmount.toString());
-            calculateAmount();
-            Toast.makeText(this, "Transaction Successful!", Toast.LENGTH_LONG).show();
-            startActivity(new Intent(SendToUser.this, UsersActivity.class));
+            Intent intent = new Intent(SendToUser.this, TransferMoney.class);
+
+            intent.putExtra("from_name", mName);
+            intent.putExtra("to_phone_no", mSelectuserPhoneNo);
+            intent.putExtra("from_phone_no", mPhoneNo);
+            intent.putExtra("to_name", mSelectuserName);
+            intent.putExtra("from_balance", mCurrentAmount);
+            intent.putExtra("to_balance", mSelectuserBalance);
+            startActivity(intent);
             finish();
         }
     }
 
-    private void calculateAmount() {
-        Double currentAmount = Double.parseDouble(mCurrentAmount);
-        Double transferAmount = Double.parseDouble(mTransferAmount);
-        Double remainingAmount = currentAmount - transferAmount;
-        mRemainingAmount = remainingAmount.toString();
-        new MyDbHandler(this).updateAmount(mPhoneNo, mRemainingAmount);
-    }
 
     @Override
     public void onBackPressed() {
@@ -97,42 +107,22 @@ public class SendToUser extends AppCompatActivity {
                 .setPositiveButton("yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        new MyDbHandler(SendToUser.this).addHistory(mDate, mName, "Not selected", mTransferAmount, "Failed");
-                        Toast.makeText(SendToUser.this, "Transaction Cancelled!", Toast.LENGTH_LONG).show();
+                        new MyDbHandler(SendToUser.this).addHistory(mDate, mName, "Not selected", "0", "Failed");
+                        // set the text in the TextView
+                        toastTextView.setText("Transaction Cancelled!");
+                        // set the Image in the ImageView
+                        toastImageView.setImageResource(R.drawable.ic_cancel);
+                        // create a new Toast using context
+                        Toast toast = new Toast(getApplicationContext());
+                        toast.setDuration(Toast.LENGTH_LONG); // set the duration for the Toast
+                        toast.setView(layout); // set the inflated layout
+                        toast.show(); // display the custom Toast
                         startActivity(new Intent(SendToUser.this, UsersActivity.class));
                         finish();
                     }
                 }).setNegativeButton("No", null);
         AlertDialog alertexit = builder_exitbutton.create();
         alertexit.show();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-        MenuItem search = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(search);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                newText = newText.toLowerCase();
-                ArrayList<Contact> newList = new ArrayList<>();
-                for (Contact model : contactList) {
-                    String name = model.getName().toLowerCase();
-                    if (name.contains(newText)) {
-                        newList.add(model);
-                    }
-                }
-                adapter.setFilter(newList);
-                return true;
-            }
-        });
-        return super.onCreateOptionsMenu(menu);
     }
 
     private class AyncData extends AsyncTask<Void, Void, List<Contact>> {

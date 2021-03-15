@@ -59,6 +59,7 @@ public class SendToUserAdapter extends RecyclerView.Adapter<SendToUserAdapter.Vi
             mNameTextView = itemView.findViewById(R.id.username);
             mPhoneNoTextView = itemView.findViewById(R.id.phone_number);
             mBalanceTextView = itemView.findViewById(R.id.balance);
+
         }
 
 
@@ -67,11 +68,5 @@ public class SendToUserAdapter extends RecyclerView.Adapter<SendToUserAdapter.Vi
             int position = getAdapterPosition();
             sendToUser.selectUser(position);
         }
-    }
-
-    public void setFilter(ArrayList<Contact> newList) {
-        mContactList = new ArrayList<>();
-        mContactList.addAll(newList);
-        notifyDataSetChanged();
     }
 }
