@@ -9,37 +9,52 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BasicBankingSystem">
+
         <activity
-            android:name=".HistoryListActivity"
-            android:parentActivityName=".UsersActivity"
-            android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".UsersActivity" />
-        </activity>
-        <activity
-            android:name=".SendToUser"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".UserData"
-            android:parentActivityName=".UsersActivity"
-            android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".UsersActivity" />
-        </activity>
-        <activity
-            android:name=".MainActivity"
-            android:screenOrientation="portrait">
+            android:name=".SplashScreen"
+            android:theme="@style/Theme.BasicBankingSystem.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.BasicBankingSystem.NoActionBar" />
+
         <activity
             android:name=".UsersActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.BasicBankingSystem" />
+
+        <activity
+            android:name=".HistoryListActivity"
+            android:label="History"
+            android:parentActivityName=".UsersActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.BasicBankingSystem">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".UsersActivity" />
+        </activity>
+
+        <activity
+            android:name=".UserData"
+            android:parentActivityName=".UsersActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.BasicBankingSystem">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".UsersActivity" />
+        </activity>
+
+        <activity
+            android:name=".SendToUser"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.BasicBankingSystem" />
 
 
     </application>

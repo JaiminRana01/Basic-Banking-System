@@ -1,40 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".UserData">
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cycle_add"
+        android:layout_width="120dp"
+        android:layout_height="100dp"
+        android:layout_row="0"
+        android:layout_rowWeight="1"
+        android:layout_column="0"
+        android:layout_columnWeight="1"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:layout_marginTop="20dp"
+        android:padding="20dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="8dp">
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:backgroundTint="@color/colorPrimary"
+            android:src="@drawable/user" />
+
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/username"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_below="@+id/cycle_add"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:text="Jaimin"
+        android:textColor="#000"
+        android:textSize="25dp"
+        android:textStyle="bold" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/username"
         android:gravity="center"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/username_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="30dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="20dp"
-                android:text="Name :"
-                android:textColor="#000"
-                android:textSize="15dp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/username"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:textColor="#000"
-                android:textSize="15dp"
-                android:textStyle="bold" />
-        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/mobile_no_container"
@@ -57,8 +72,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:textColor="#000"
-                android:textSize="15dp"
-                android:textStyle="bold" />
+                android:textSize="15dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -82,8 +96,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:textColor="#000"
-                android:textSize="15dp"
-                android:textStyle="bold" />
+                android:textSize="15dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -107,8 +120,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:textColor="#000"
-                android:textSize="15dp"
-                android:textStyle="bold" />
+                android:textSize="15dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -122,7 +134,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="20dp"
-                android:text="IFSC Code"
+                android:text="IFSC Code : "
                 android:textColor="#000"
                 android:textSize="15dp"
                 android:textStyle="bold" />
@@ -132,8 +144,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:textColor="#000"
-                android:textSize="15dp"
-                android:textStyle="bold" />
+                android:textSize="15dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -165,16 +176,14 @@
                     android:layout_height="wrap_content"
                     android:text="Rs."
                     android:textColor="#000"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/balance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="#000"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/rupee_slash"
@@ -182,8 +191,7 @@
                     android:layout_height="wrap_content"
                     android:text=" /-"
                     android:textColor="#000"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:textSize="15sp" />
             </LinearLayout>
         </LinearLayout>
 
@@ -191,16 +199,13 @@
             android:id="@+id/button_transfer"
             android:layout_width="147dp"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="50dp"
-            android:layout_marginBottom="50dp"
-            android:backgroundTint="#E66F6F"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="@color/colorPrimary"
             android:paddingHorizontal="10dp"
-            android:paddingVertical="5dp"
             android:text="Transfer money"
             android:textAllCaps="false"
             android:textColor="#fff"
             android:textSize="15dp"
             android:textStyle="bold" />
     </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

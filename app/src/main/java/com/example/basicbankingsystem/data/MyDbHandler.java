@@ -170,15 +170,10 @@ public class MyDbHandler extends SQLiteOpenHelper {
         }
     }
 
-    public Cursor readTransferData() {
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + Params.TABLE_NAME2, null);
-        return cursor;
-    }
-
     public void updateAmount(String phone_no, String amount) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("UPDATE " + Params.TABLE_NAME1 + " SET balance = " + amount + " WHERE " + Params.KEY_PHONE + " = " + phone_no);
     }
+
 
 }

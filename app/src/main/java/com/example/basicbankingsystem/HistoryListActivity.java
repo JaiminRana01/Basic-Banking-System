@@ -1,15 +1,18 @@
 package com.example.basicbankingsystem;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.example.basicbankingsystem.adapter.HistoryAdapter;
+import com.example.basicbankingsystem.adapter.SendToUserAdapter;
 import com.example.basicbankingsystem.data.MyDbHandler;
 import com.example.basicbankingsystem.model.Contact;
 
@@ -22,7 +25,7 @@ public class HistoryListActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     HistoryAdapter adapter;
-
+    MyDbHandler db = new MyDbHandler(HistoryListActivity.this);
     TextView historyEmpty;
 
     @Override
@@ -30,7 +33,6 @@ public class HistoryListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history_list);
 
-        MyDbHandler db = new MyDbHandler(HistoryListActivity.this);
 
         recyclerView = findViewById(R.id.recyclerview);
         recyclerView.setHasFixedSize(true);
@@ -39,22 +41,32 @@ public class HistoryListActivity extends AppCompatActivity {
 
         historyEmpty = findViewById(R.id.empty_text);
 
-        historyList = db.getHistoryData();
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+        dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.divider));
+        recyclerView.addItemDecoration(dividerItemDecoration);
 
-        for (Contact contact : historyList) {
-            Log.d("dbJaimin", "From: " + contact.getFrom_name() + "\n"
-                    + " To: " + contact.getTo_name() + "\n"
-                    + " Status: " + contact.getTransaction_status() + "\n"
-                    + "balance: " + contact.getBalance() + "\n"
-                    + "date: " + contact.getDate());
+        AyncData async = new AyncData();
+        async.execute();
+    }
+
+    private class AyncData extends AsyncTask<Void, Void, List<Contact>> {
+
+        @Override
+        protected List<Contact> doInBackground(Void... voids) {
+
+            historyList = db.getHistoryData();
+            return historyList;
         }
 
-        adapter = new HistoryAdapter(HistoryListActivity.this, historyList);
-        recyclerView.setAdapter(adapter);
+        @Override
+        protected void onPostExecute(List<Contact> contacts) {
+            super.onPostExecute(contacts);
+            if (historyList.size() == 0) {
+                historyEmpty.setVisibility(View.VISIBLE);
+            }
 
-        if (historyList.size() == 0) {
-            historyEmpty.setVisibility(View.VISIBLE);
+            adapter = new HistoryAdapter(HistoryListActivity.this, contacts);
+            recyclerView.setAdapter(adapter);
         }
-
     }
 }

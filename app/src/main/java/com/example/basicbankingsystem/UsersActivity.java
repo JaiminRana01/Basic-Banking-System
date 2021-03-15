@@ -1,6 +1,7 @@
 package com.example.basicbankingsystem;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,8 +21,10 @@ import java.util.List;
 
 public class UsersActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
-    private List<Contact> contactList = new ArrayList<>();
+    private List<Contact> contactList;
     private UserListAdapter adapter;
+
+    MyDbHandler db = new MyDbHandler(UsersActivity.this);
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,12 +35,8 @@ public class UsersActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        MyDbHandler db = new MyDbHandler(UsersActivity.this);
-
-        contactList = db.getAllData();
-
-        adapter = new UserListAdapter(UsersActivity.this, contactList);
-        recyclerView.setAdapter(adapter);
+        AyncData async = new AyncData();
+        async.execute();
     }
 
     @Override
@@ -52,5 +51,22 @@ public class UsersActivity extends AppCompatActivity {
             startActivity(new Intent(UsersActivity.this, HistoryListActivity.class));
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private class AyncData extends AsyncTask<Void, Void, List<Contact>> {
+
+        @Override
+        protected List<Contact> doInBackground(Void... voids) {
+
+            contactList = db.getAllData();
+            return contactList;
+        }
+
+        @Override
+        protected void onPostExecute(List<Contact> contacts) {
+            super.onPostExecute(contacts);
+            adapter = new UserListAdapter(UsersActivity.this, contacts);
+            recyclerView.setAdapter(adapter);
+        }
     }
 }
