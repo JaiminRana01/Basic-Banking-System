@@ -22,7 +22,7 @@ import java.util.Calendar;
 
 public class UserData extends AppCompatActivity {
 
-    TextView mNameTextView, mPhoneNoTextView, mEmailIdTextView, mAccountNoTextView, mIfscCodeTextView, mCurrentBalanceTextView;
+    TextView mNameTextView, mPhoneNoTextView, mEmailIdTextView, mAccountNoTextView, mIfscCodeTextView, mCurrentBalanceTextView, mDate;
     Button mTransferButton;
     String mPhoneNo;
     double mCurrentBalance;
@@ -47,7 +47,12 @@ public class UserData extends AppCompatActivity {
         mTransferButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                enterAmountDialog();
+                Intent intent = new Intent(UserData.this, SendToUser.class);
+                intent.putExtra("phone_no", mPhoneNoTextView.getText().toString());
+                intent.putExtra("name", mNameTextView.getText().toString());
+                intent.putExtra("current_amount", String.valueOf(mCurrentBalance));
+                startActivity(intent);
+                finish();
             }
         });
 
@@ -77,79 +82,4 @@ public class UserData extends AppCompatActivity {
         }
     }
 
-    private void enterAmountDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(UserData.this);
-
-        View dialogView = getLayoutInflater().inflate(R.layout.transfer, null);
-        builder.setTitle("Enter amount");
-        builder.setCancelable(false);
-        builder.setView(dialogView);
-
-        EditText mAmount = (EditText) dialogView.findViewById(R.id.enter_amount);
-
-        builder.setPositiveButton("Send", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-
-            }
-        }).
-
-                setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        transactionCancel();
-                    }
-                });
-
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-
-        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mAmount.getText().toString().isEmpty()) {
-                    mAmount.setError("Amount can't be empty");
-                } else if (Double.parseDouble(mAmount.getText().toString()) > mCurrentBalance) {
-                    mAmount.setError("Your account don't have enough balance");
-                } else {
-                    Intent intent = new Intent(UserData.this, SendToUser.class);
-                    intent.putExtra("phone_no", mPhoneNoTextView.getText().toString());
-                    intent.putExtra("name", mNameTextView.getText().toString());
-                    intent.putExtra("current_amount", String.valueOf(mCurrentBalance));
-                    intent.putExtra("transfer_amount", mAmount.getText().toString());
-                    startActivity(intent);
-                    finish();
-                }
-            }
-        });
-
-    }
-
-    private void transactionCancel() {
-        AlertDialog.Builder builder_exitbutton = new AlertDialog.Builder(UserData.this);
-        builder_exitbutton.setTitle("Do you want to cancel the transaction?").setCancelable(false)
-                .setPositiveButton("yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                        Calendar calendar = Calendar.getInstance();
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM-yyyy, hh:mm a");
-                        String date = simpleDateFormat.format(calendar.getTime());
-
-                        new MyDbHandler(UserData.this).addHistory(date, mNameTextView.getText().toString(), "Not selected", "0", "Failed");
-
-                        Toast.makeText(UserData.this, "Transaction Cancelled!", Toast.LENGTH_LONG).show();
-                    }
-                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                enterAmountDialog();
-            }
-        });
-        AlertDialog alertexit = builder_exitbutton.create();
-        alertexit.show();
-    }
 }

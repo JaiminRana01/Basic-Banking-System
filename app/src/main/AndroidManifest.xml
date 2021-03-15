@@ -9,7 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BasicBankingSystem">
-
+        <activity
+            android:name=".TransferMoney"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.BasicBankingSystem.NoActionBar"></activity>
         <activity
             android:name=".SplashScreen"
             android:theme="@style/Theme.BasicBankingSystem.NoActionBar">
@@ -19,17 +22,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.BasicBankingSystem.NoActionBar" />
+            android:theme="@style/Theme.BasicBankingSystem.NoActionBar"></activity>
 
         <activity
             android:name=".UsersActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.BasicBankingSystem" />
-
         <activity
             android:name=".HistoryListActivity"
             android:label="History"
@@ -40,7 +41,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".UsersActivity" />
         </activity>
-
         <activity
             android:name=".UserData"
             android:parentActivityName=".UsersActivity"
@@ -50,12 +50,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".UsersActivity" />
         </activity>
-
         <activity
             android:name=".SendToUser"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.BasicBankingSystem" />
-
+            android:theme="@style/Theme.BasicBankingSystem"></activity>
 
     </application>
 
