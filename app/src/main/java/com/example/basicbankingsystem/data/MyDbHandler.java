@@ -38,7 +38,7 @@ public class MyDbHandler extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO " + Params.TABLE_NAME1 + " values(9873216541,'Dev',3647.055,'dev@gmail.com','XXXXXXXXXXXX1245','CBA43210987')");
         db.execSQL("INSERT INTO " + Params.TABLE_NAME1 + " values(6549871233,'Gautam',5522.0067,'gautam@gmail.com','XXXXXXXXXXXX7834','CDC10987654')");
         db.execSQL("INSERT INTO " + Params.TABLE_NAME1 + " values(7891234562,'Hardik',6416.00,'hardik@gmail.com','XXXXXXXXXXXX1278','BCA65432109')");
-        db.execSQL("INSERT INTO " + Params.TABLE_NAME1 + " values(1597534862,'Lakshay',7389.00,'lakshay@gmail.com','XXXXXXXXXXXX4569','BCd09876543')");
+        db.execSQL("INSERT INTO " + Params.TABLE_NAME1 + " values(1597534862,'Lakshay',7389.00,'lakshay@gmail.com','XXXXXXXXXXXX4569','BCD09876543')");
         db.execSQL("INSERT INTO " + Params.TABLE_NAME1 + " values(7539514865,'Neel',5296.00,'neel@gmail.com','XXXXXXXXXXXX4525','ABC09876543')");
         db.execSQL("INSERT INTO " + Params.TABLE_NAME1 + " values(5852456588,'Ranbir',4175.00,'ranbir@gmail.com','XXXXXXXXXXXX5859','ABC09876159')");
         db.execSQL("INSERT INTO " + Params.TABLE_NAME1 + " values(8978321654,'Kabir',2455.00,'kabir@gmail.com','XXXXXXXXXXXX9874','ABC09876458')");
