@@ -2,7 +2,6 @@ package com.example.basicbankingsystem;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,22 +11,16 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.basicbankingsystem.adapter.SendToUserAdapter;
-import com.example.basicbankingsystem.adapter.UserListAdapter;
 import com.example.basicbankingsystem.data.MyDbHandler;
 import com.example.basicbankingsystem.model.Contact;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -38,7 +31,7 @@ public class SendToUser extends AppCompatActivity {
 
     MyDbHandler db = new MyDbHandler(SendToUser.this);
 
-    String mPhoneNo, mName, mCurrentAmount, mTransferAmount, mRemainingAmount;
+    String mPhoneNo, mName, mCurrentAmount;
     String mSelectuserPhoneNo, mSelectuserName, mSelectuserBalance, mDate;
 
     View layout;
@@ -56,18 +49,17 @@ public class SendToUser extends AppCompatActivity {
 
         // Retrieve the Layout Inflater and inflate the layout from xml
         LayoutInflater inflater = getLayoutInflater();
-        layout = inflater.inflate(R.layout.custom_toast,
-                (ViewGroup) findViewById(R.id.toast_layout_root));
+        layout = inflater.inflate(R.layout.custom_toast, findViewById(R.id.toast_layout_root));
+
         // get the reference of TextView and ImageVIew from inflated layout
-        toastTextView = (TextView) layout.findViewById(R.id.toastTextView);
-        toastImageView = (ImageView) layout.findViewById(R.id.toastImageView);
+        toastTextView = layout.findViewById(R.id.toastTextView);
+        toastImageView = layout.findViewById(R.id.toastImageView);
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             mPhoneNo = bundle.getString("phone_no");
             mName = bundle.getString("name");
             mCurrentAmount = bundle.getString("current_amount");
-            mTransferAmount = bundle.getString("transfer_amount");
         }
 
 

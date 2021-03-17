@@ -37,6 +37,7 @@
         android:layout_height="50dp"
         android:layout_below="@+id/cycle_add"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
         android:gravity="center"
         android:text="Jaimin"
         android:textColor="#000"

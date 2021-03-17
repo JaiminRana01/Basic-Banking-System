@@ -23,7 +23,7 @@ import java.util.Calendar;
 
 public class TransferMoney extends AppCompatActivity {
     private Button mCancelButton;
-    private Button mSendButton;
+    private Button mPayButton;
 
     String mPhoneNo, mName, mCurrentAmount, mTransferAmount, mRemainingAmount;
     String mSelectuserPhoneNo, mSelectuserName, mSelectuserBalance, mDate;
@@ -52,7 +52,7 @@ public class TransferMoney extends AppCompatActivity {
         mAmount = findViewById(R.id.transfer_amount);
 
         mCancelButton = findViewById(R.id.cancel);
-        mSendButton = findViewById(R.id.send);
+        mPayButton = findViewById(R.id.pay);
         mSendTo = findViewById(R.id.send_to);
         mSendPhoneno = findViewById(R.id.phone_number);
 
@@ -76,12 +76,21 @@ public class TransferMoney extends AppCompatActivity {
         mCancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mTransferAmount = mAmount.getText().toString();
+
+
                 AlertDialog.Builder builder_exitbutton = new AlertDialog.Builder(TransferMoney.this);
                 builder_exitbutton.setTitle("Do you want to cancel the transaction?").setCancelable(false)
                         .setPositiveButton("yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                new MyDbHandler(TransferMoney.this).addHistory(mDate, mName, "Not selected", "0", "Failed");
+
+                                if (mTransferAmount.isEmpty()) {
+                                    mTransferAmount = "0";
+                                }
+
+                                new MyDbHandler(TransferMoney.this).addHistory(mDate, mName, mSelectuserName, mTransferAmount, "Failed");
+
                                 // set the text in the TextView
                                 toastTextView.setText("Transaction Cancelled!");
                                 // set the Image in the ImageView
@@ -101,7 +110,7 @@ public class TransferMoney extends AppCompatActivity {
             }
         });
 
-        mSendButton.setOnClickListener(new View.OnClickListener() {
+        mPayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mAmount.getText().toString().isEmpty()) {
@@ -125,8 +134,8 @@ public class TransferMoney extends AppCompatActivity {
                 .setPositiveButton("yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        new MyDbHandler(TransferMoney.this).addHistory(mDate, mName, "Not selected", "0", "Failed");
-//                        Toast.makeText(TransferMoney.this, "Transaction Cancelled!", Toast.LENGTH_LONG).show();
+                        new MyDbHandler(TransferMoney.this).addHistory(mDate, mName, mSelectuserName, "0", "Failed");
+
                         // set the text in the TextView
                         toastTextView.setText("Transaction Cancelled!");
                         // set the Image in the ImageView
@@ -153,7 +162,6 @@ public class TransferMoney extends AppCompatActivity {
         new MyDbHandler(this).addHistory(mDate, mName, mSelectuserName, mTransferAmount, "Success");
         new MyDbHandler(this).updateAmount(mSelectuserPhoneNo, selecteduserRemainingAmount.toString());
         calculateAmount();
-//        Toast.makeText(this, "Transaction Successful!", Toast.LENGTH_LONG).show();
 
 
         // set the text in the TextView

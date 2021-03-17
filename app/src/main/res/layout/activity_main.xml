@@ -10,7 +10,7 @@
         android:id="@+id/name_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="110dp"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -48,9 +48,9 @@
         android:id="@+id/button_view_users"
         android:layout_width="160dp"
         android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@id/name_container"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="80dp"
+        android:layout_marginTop="50dp"
         android:background="@drawable/rounded_button"
         android:text="View Users"
         android:textAllCaps="false"

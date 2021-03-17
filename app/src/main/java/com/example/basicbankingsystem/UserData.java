@@ -1,28 +1,22 @@
 package com.example.basicbankingsystem;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.basicbankingsystem.data.MyDbHandler;
 
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 public class UserData extends AppCompatActivity {
 
-    TextView mNameTextView, mPhoneNoTextView, mEmailIdTextView, mAccountNoTextView, mIfscCodeTextView, mCurrentBalanceTextView, mDate;
+    TextView mNameTextView, mPhoneNoTextView, mEmailIdTextView, mAccountNoTextView, mIfscCodeTextView, mCurrentBalanceTextView;
     Button mTransferButton;
     String mPhoneNo;
     double mCurrentBalance;

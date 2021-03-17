@@ -12,8 +12,16 @@ import com.example.basicbankingsystem.R;
 import com.example.basicbankingsystem.SendToUser;
 import com.example.basicbankingsystem.model.Contact;
 
-import java.util.ArrayList;
+
 import java.util.List;
+
+/**
+ * An {@link SendToUserAdapter} knows how to create a list item layout for each contact
+ * in the data source (a list of {@link Contact} objects).
+ *
+ * These list item layouts will be provided to an adapter view like card view
+ * to be displayed to the user.
+ */
 
 public class SendToUserAdapter extends RecyclerView.Adapter<SendToUserAdapter.ViewHolder> {
     private List<Contact> mContactList;

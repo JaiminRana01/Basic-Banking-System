@@ -16,6 +16,14 @@ import com.example.basicbankingsystem.model.Contact;
 
 import java.util.List;
 
+/**
+ * An {@link UserListAdapter} knows how to create a list item layout for each contact
+ * in the data source (a list of {@link Contact} objects).
+ * <p>
+ * These list item layouts will be provided to an adapter view like card view
+ * to be displayed to the user.
+ */
+
 public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHolder> {
     private Context mContext;
     private List<Contact> mContactList;

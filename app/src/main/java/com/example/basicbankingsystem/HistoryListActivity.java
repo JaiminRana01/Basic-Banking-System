@@ -7,12 +7,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.example.basicbankingsystem.adapter.HistoryAdapter;
-import com.example.basicbankingsystem.adapter.SendToUserAdapter;
 import com.example.basicbankingsystem.data.MyDbHandler;
 import com.example.basicbankingsystem.model.Contact;
 
@@ -40,10 +38,6 @@ public class HistoryListActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         historyEmpty = findViewById(R.id.empty_text);
-
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
-        dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.divider));
-        recyclerView.addItemDecoration(dividerItemDecoration);
 
         AyncData async = new AyncData();
         async.execute();

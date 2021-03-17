@@ -5,13 +5,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import com.example.basicbankingsystem.model.Contact;
 import com.example.basicbankingsystem.params.Params;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MyDbHandler extends SQLiteOpenHelper {
@@ -23,19 +23,20 @@ public class MyDbHandler extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String create_table1 = "CREATE TABLE " + Params.TABLE_NAME1 + " ( " + Params.KEY_PHONE + " INTEGER PRIMARY KEY ," + Params.KEY_NAME + " TEXT," + Params.KEY_BALANCE + " DECIMAL," + Params.KEY_EMAIL + " VARCHAR," + Params.KEY_ACCOUNT_N0 + " VARCHAR," + Params.KEY_IFSC_CODE + " VARCHAR)";
+        String create_table1 = "CREATE TABLE " + Params.TABLE_NAME1 + " ( " + Params.KEY_PHONE + " INTEGER PRIMARY KEY ," + Params.KEY_NAME + " TEXT,"
+                + Params.KEY_BALANCE + " DOUBLE," + Params.KEY_EMAIL + " VARCHAR," + Params.KEY_ACCOUNT_N0 + " VARCHAR," + Params.KEY_IFSC_CODE + " VARCHAR)";
 
         String create_table2 = "CREATE TABLE " + Params.TABLE_NAME2 + " ( " + Params.KEY_TRANSACTION_ID +
                 " INTEGER PRIMARY KEY," + Params.KEY_DATE + " TEXT," + Params.KEY_FROM_NAME + " TEXT," +
-                Params.KEY_TO_NAME + " TEXT," + Params.KEY_AMOUNT + " DECIMAL," + Params.KEY_STATUS + " TEXT" + ")";
+                Params.KEY_TO_NAME + " TEXT," + Params.KEY_AMOUNT + " DOUBLE, " + Params.KEY_STATUS + " TEXT" + ")";
 
 
         db.execSQL(create_table1);
         db.execSQL(create_table2);
         db.execSQL("INSERT INTO " + Params.TABLE_NAME1 + " values(9000000001, 'Bhavik', 9472.00, 'harshit@gmail.com', 'XXXXXXXXXXXX1234', 'ABC09876543')");
-        db.execSQL("INSERT INTO " + Params.TABLE_NAME1 + " values(9000000002,'Aaryan',9472.00,'harshit@gmail.com','XXXXXXXXXXXX1234','ABC09876543')");
-        db.execSQL("INSERT INTO " + Params.TABLE_NAME1 + " values(9000000003,'Rutvik',9472.00,'harshit@gmail.com','XXXXXXXXXXXX1234','ABC09876543')");
-        db.execSQL("INSERT INTO " + Params.TABLE_NAME1 + " values(9000000004,'Pranjal',9472.00,'harshit@gmail.com','XXXXXXXXXXXX1234','ABC09876543')");
+        db.execSQL("INSERT INTO " + Params.TABLE_NAME1 + " values(9000000002,'Aaryan',9472.40,'harshit@gmail.com','XXXXXXXXXXXX1234','ABC09876543')");
+        db.execSQL("INSERT INTO " + Params.TABLE_NAME1 + " values(9000000003,'Rutvik',9472.055,'harshit@gmail.com','XXXXXXXXXXXX1234','ABC09876543')");
+        db.execSQL("INSERT INTO " + Params.TABLE_NAME1 + " values(9000000004,'Pranjal',9472.0067,'harshit@gmail.com','XXXXXXXXXXXX1234','ABC09876543')");
         db.execSQL("INSERT INTO " + Params.TABLE_NAME1 + " values(9000000005,'Rushabh',9472.00,'harshit@gmail.com','XXXXXXXXXXXX1234','ABC09876543')");
         db.execSQL("INSERT INTO " + Params.TABLE_NAME1 + " values(9000000006,'JK',9472.00,'harshit@gmail.com','XXXXXXXXXXXX1234','ABC09876543')");
         db.execSQL("INSERT INTO " + Params.TABLE_NAME1 + " values(9000000007,'Deep',9472.00,'harshit@gmail.com','XXXXXXXXXXXX1234','ABC09876543')");
@@ -126,23 +127,27 @@ public class MyDbHandler extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 Contact contact = new Contact();
+
+                String balanceFromDb = cursor.getString(4);
+                Double balance = Double.parseDouble(balanceFromDb);
+
+                NumberFormat nf = NumberFormat.getNumberInstance();
+                nf.setGroupingUsed(true);
+                nf.setMaximumFractionDigits(2);
+                nf.setMinimumFractionDigits(2);
+                String price = nf.format(balance);
+
                 contact.setDate(cursor.getString(1));
                 contact.setFrom_name(cursor.getString(2));
                 contact.setTo_name(cursor.getString(3));
-                contact.setBalance(cursor.getString(4));
+                contact.setBalance(price);
                 contact.setTransaction_status(cursor.getString(5));
-
-                Log.d("dbJaimingethistory", "From: " + cursor.getString(2) + "\n"
-                        + " To: " + cursor.getString(3) + "\n"
-                        + " Status: " + cursor.getString(5) + "\n"
-                        + "balance: " + cursor.getString(4) + "\n"
-                        + "date: " + cursor.getString(1));
 
                 contactList.add(contact);
             } while (cursor.moveToNext());
         }
 
-
+        Collections.reverse(contactList);
         return contactList;
     }
 

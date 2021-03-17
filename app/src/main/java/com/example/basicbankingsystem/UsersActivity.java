@@ -16,7 +16,6 @@ import com.example.basicbankingsystem.adapter.UserListAdapter;
 import com.example.basicbankingsystem.data.MyDbHandler;
 import com.example.basicbankingsystem.model.Contact;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class UsersActivity extends AppCompatActivity {

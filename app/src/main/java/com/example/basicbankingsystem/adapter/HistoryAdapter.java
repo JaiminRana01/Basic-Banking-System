@@ -15,6 +15,14 @@ import com.example.basicbankingsystem.model.Contact;
 
 import java.util.List;
 
+/**
+ * An {@link HistoryAdapter} knows how to create a list item layout for each contact
+ * in the data source (a list of {@link Contact} objects).
+ *
+ * These list item layouts will be provided to an adapter view like card view
+ * to be displayed to the user.
+ */
+
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder> {
     private Context mContext;
     private List<Contact> mContactList;
